@@ -2,16 +2,33 @@ import discord
 from discord.ext import commands
 import os
 from dotenv import load_dotenv
+import flask
+from threading import Thread
 
-#Credenciales
-load_dotenv()
-DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
+# Inicializa Flask (aunque no lo uses realmente)
+app = flask.Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Bot is running!", 200  # Responde con un mensaje para evitar que Render cierre el servicio.
+
+def run_flask():
+    port = int(os.environ.get("PORT", 8080))  # Render asigna un puerto dinámico.
+    app.run(host="0.0.0.0", port=port)
+
+# Inicia Flask en un hilo separado para que no bloquee el bot.
+Thread(target=run_flask).start()
+
+# Tu código del bot de Discord
+DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 
 intents = discord.Intents.default()
-intents.message_content = True  
+bot = discord.Client(intents=intents)
 
-bot = commands.Bot(command_prefix='!',intents=intents)
-
+@bot.event
+async def on_ready():
+    print(f'Conectado como {bot.user}')
+#-----------------------------------------------------------
 @bot.command(name='suma')
 async def sumar(ctx,num1,num2):
     response = f'Tu resultado de la suma es = {int(num1) + int(num2)}'
