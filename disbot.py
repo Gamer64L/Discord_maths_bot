@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 #Credenciales
 load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN')
+DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
 
 intents = discord.Intents.default()
 intents.message_content = True  
