@@ -32,4 +32,4 @@ async def restar(ctx,num1,num2):
     response = f'Tu resultado de la división es = {int(num1) / int(num2)} '
     await ctx.send(response)
 
-bot.run(TOKEN)
+bot.run(DISCORD_TOKEN)
