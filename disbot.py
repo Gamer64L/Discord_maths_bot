@@ -23,11 +23,13 @@ DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 
 # Definir intents y prefijo del bot
 intents = discord.Intents.default()
+intents.message_content = True  # Asegura que el bot pueda leer mensajes
+
 bot = commands.Bot(command_prefix="!", intents=intents)  # Ahora usa "!" como prefijo
 
 @bot.event
 async def on_ready():
-    print(f'Conectado como {bot.user}')
+    print(f'✅ Conectado como {bot.user}')
 
 # Comandos del bot
 @bot.command(name='suma')
@@ -48,7 +50,7 @@ async def multiplicar(ctx, num1: int, num2: int):
 @bot.command(name='dividir')
 async def dividir(ctx, num1: int, num2: int):
     if num2 == 0:
-        response = "No se puede dividir entre 0."
+        response = "❌ No se puede dividir entre 0."
     else:
         response = f'Tu resultado de la división es = {num1 / num2}'
     await ctx.send(response)
