@@ -27,7 +27,7 @@ bot = discord.Client(intents=intents)
 
 @bot.event
 async def on_ready():
-    print(f'Conectado como {bot.user}')
+    print(f'Conectado como {disbot}')
 #-----------------------------------------------------------
 @bot.command(name='suma')
 async def sumar(ctx,num1,num2):
