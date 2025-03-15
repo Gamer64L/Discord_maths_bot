@@ -5,27 +5,25 @@ from dotenv import load_dotenv
 import flask
 from threading import Thread
 
-# Inicializa Flask (para que Render no cierre el servicio)
+# Inicializa Flask (para mantener Render activo)
 app = flask.Flask(__name__)
 
 @app.route('/')
 def home():
-    return "Bot is running!", 200
+    return "Bot is running!", 200  
 
 def run_flask():
-    port = int(os.environ.get("PORT", 8080))
+    port = int(os.environ.get("PORT", 8080))  
     app.run(host="0.0.0.0", port=port)
 
-# Ejecuta Flask en un hilo separado
 Thread(target=run_flask).start()
 
-# Cargar variables de entorno
-load_dotenv()
+# Cargar el token
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 
-# Cambia discord.Client a commands.Bot
+# Definir intents y prefijo del bot
 intents = discord.Intents.default()
-bot = commands.Bot(command_prefix="!", intents=intents)
+bot = commands.Bot(command_prefix="!", intents=intents)  # Ahora usa "!" como prefijo
 
 @bot.event
 async def on_ready():
@@ -34,21 +32,25 @@ async def on_ready():
 # Comandos del bot
 @bot.command(name='suma')
 async def sumar(ctx, num1: int, num2: int):
-    await ctx.send(f'Tu resultado de la suma es = {num1 + num2}')
+    response = f'Tu resultado de la suma es = {num1 + num2}'
+    await ctx.send(response)
 
 @bot.command(name='resta')
 async def restar(ctx, num1: int, num2: int):
-    await ctx.send(f'Tu resultado de la resta es = {num1 - num2}')
+    response = f'Tu resultado de la resta es = {num1 - num2}'
+    await ctx.send(response)
 
 @bot.command(name='multiplicar')
 async def multiplicar(ctx, num1: int, num2: int):
-    await ctx.send(f'Tu resultado de la multiplicación es = {num1 * num2}')
+    response = f'Tu resultado de la multiplicación es = {num1 * num2}'
+    await ctx.send(response)
 
 @bot.command(name='dividir')
 async def dividir(ctx, num1: int, num2: int):
     if num2 == 0:
-        await ctx.send("No se puede dividir entre 0.")
+        response = "No se puede dividir entre 0."
     else:
-        await ctx.send(f'Tu resultado de la división es = {num1 / num2}')
+        response = f'Tu resultado de la división es = {num1 / num2}'
+    await ctx.send(response)
 
 bot.run(DISCORD_TOKEN)
